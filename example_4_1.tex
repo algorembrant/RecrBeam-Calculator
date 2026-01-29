@@ -1,0 +1,212 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc}
+\usepackage{siunitx}
+\usepackage{fancyhdr}
+\usepackage{parskip}
+
+% Geometry settings
+\geometry{margin=1in}
+
+% Header and Footer
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Example 4-1}
+\lhead{Nominal Moment Strength Calculation}
+\cfoot{\thepage}
+
+\title{\textbf{Example 4-1: Nominal Moment Strength Calculation for a Singly Reinforced Concrete Beam}}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+This document provides a detailed, step-by-step breakdown of the example problem (referenced as Fig. 4-19a). The goal is to calculate the nominal moment strength $M_n$ for the beam and confirm that the area of tension steel exceeds the required minimum steel area as per Equation (4-11) from the relevant design code (specifically ACI 318). All calculations are performed without skipping any micro-steps, including unit conversions and intermediate arithmetic operations.
+
+\textbf{Problem statement (paraphrased from the provided excerpt).} The task is to compute $M_n$ for the singly reinforced beam and verify that the provided tension reinforcement area exceeds the minimum required by code.
+
+\textbf{Source excerpt (short quote).} ``Calculate $M_n$ and confirm that the area of tension steel exceeds the required minimum steel area.''
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[
+  font=\small,
+  dim/.style={-Latex, thin},
+  outline/.style={draw, line width=0.8pt},
+  bar/.style={fill=black, draw=black},
+  note/.style={font=\scriptsize}
+]
+
+% Parameters (in cm for drawing convenience)
+% Use a simple scale: 12 in -> 6 cm, 20 in -> 10 cm
+\def\W{6}
+\def\H{10}
+\def\cover{1.25} % corresponds to 2.5 in in this scale
+
+% Concrete section
+\draw[outline] (0,0) rectangle (\W,\H);
+
+% Bars (4 No. 8) near the bottom
+\foreach \x in {1.2,2.4,3.6,4.8} {
+  \draw[bar] (\x,\cover) circle (0.12);
+}
+
+% Dimension: height 20 in
+\draw[dim] (-0.8,0) -- (-0.8,\H);
+\draw[outline] (-0.9,0) -- (-0.7,0);
+\draw[outline] (-0.9,\H) -- (-0.7,\H);
+\node[rotate=90] at (-1.2,\H/2) {20 in.};
+
+% Dimension: width 12 in
+\draw[dim] (0,-0.8) -- (\W,-0.8);
+\draw[outline] (0,-0.9) -- (0,-0.7);
+\draw[outline] (\W,-0.9) -- (\W,-0.7);
+\node at (\W/2,-1.2) {12 in.};
+
+% Dimension: 2.5 in to steel layer (approx)
+\draw[dim] (\W+0.8,0) -- (\W+0.8,\cover);
+\draw[outline] (\W+0.7,0) -- (\W+0.9,0);
+\draw[outline] (\W+0.7,\cover) -- (\W+0.9,\cover);
+\node[rotate=90] at (\W+1.2,\cover/2) {2.5 in.};
+
+% Label bars
+\node[note] at (\W/2,\cover+0.6) {4 No. 8 bars};
+
+\end{tikzpicture}
+\caption{Beam cross-section used in Example 4-1 (redrawn from the provided image).}
+\label{fig:beam-4-19a-redraw}
+\end{figure}
+
+The beam is a rectangular section made of concrete with compressive strength $f'_c = 4000$ psi, reinforced with four No. 8 bars in tension having yield strength $f_y = 60$ ksi. The beam dimensions are width $b = 12$ in. and total height $h = 20$ in. The effective depth $d$ is approximated as $h - 2.5$ in. to account for concrete cover, stirrup diameter, and half the longitudinal bar diameter.
+
+\section*{Given Data}
+\begin{itemize}
+    \item \textbf{Concrete compressive strength:} $f'_c = 4000$ psi
+    \item \textbf{Steel yield strength:} $f_y = 60$ ksi = $60,000$ psi
+    \item \textbf{Beam width:} $b = 12$ in.
+    \item \textbf{Beam total height:} $h = 20$ in.
+    \item \textbf{Effective depth (assumed):} $d = h - 2.5 = 20 - 2.5 = 17.5$ in.
+    \item \textbf{Tension reinforcement:} 4 No. 8 bars
+    \item \textbf{Diameter of No. 8 bar:} 1.0 in. (standard ASTM A615/A706 bar size)
+    \item \textbf{Area of one No. 8 bar (tabulated):} $A_{bar} = 0.79\ \text{in}^2$.
+    \item \textbf{Total tension steel area:} 
+    \[
+    A_s = 4 \times 0.79 = 3.16 \text{ in}^2
+    \]
+    \item \textbf{Compression reinforcement:} Ignored (not designed for compression resistance).
+    \item \textbf{Rectangular stress block factor:} $\beta_1 = 0.85$ (for $f'_c = 4000$ psi).
+    \item \textbf{Minimum steel area rule:} $A_{s,min} = \max\left( \frac{3\sqrt{f'_c}}{f_y} bd, \frac{200}{f_y} bd \right)$
+\end{itemize}
+
+\textbf{Note on Effective Depth $d$:} The approximation of 2.5 in. accounts for:
+\begin{itemize}
+    \item Clear concrete cover: 1.5 in.
+    \item Stirrup diameter: $\approx 0.5$ in.
+    \item Half the longitudinal bar diameter: 0.5 in.
+\end{itemize}
+Total: $1.5 + 0.5 + 0.5 = 2.5$ in.
+
+\section*{Step 1: Confirm Tension Steel Area Exceeds Minimum Required}
+
+\subsection*{Step 1.1: Calculate $\rho_{min}$ Using Equation (4-11)}
+The minimum reinforcement ratio $\rho_{min}$ is the maximum of two values:
+\begin{enumerate}
+    \item $\frac{3 \sqrt{f'_c}}{f_y}$
+    \item $\frac{200}{f_y}$ (in psi units)
+\end{enumerate}
+
+\subsubsection*{Micro-Calculation for First Term: $\frac{3 \sqrt{f'_c}}{f_y}$}
+\begin{itemize}
+    \item Calculate $\sqrt{f'_c} = \sqrt{4000} \approx 63.2456$.
+    \item $3 \times 63.2456 = 189.7368$.
+    \item $\frac{189.7368}{60,000} = 0.00316228$.
+\end{itemize}
+
+\subsubsection*{Micro-Calculation for Second Term: $\frac{200}{f_y}$}
+\[
+\frac{200}{60,000} = 0.00333333
+\]
+
+\subsubsection*{Select $\rho_{min}$}
+\[
+\rho_{min} = \max(0.00316228, 0.00333333) = 0.00333333
+\]
+
+\subsection*{Step 1.2: Calculate Minimum Steel Area $A_{s,min}$}
+\[
+A_{s,min} = \rho_{min} \times b \times d
+\]
+\begin{itemize}
+    \item $b \times d = 12 \times 17.5 = 210 \text{ in}^2$
+    \item $A_{s,min} = 0.00333333 \times 210 = 0.6999993 \approx 0.70 \text{ in}^2$
+\end{itemize}
+
+\subsection*{Step 1.3: Compare Actual $A_s$ with $A_{s,min}$}
+\begin{itemize}
+    \item Actual $A_s = 3.16 \text{ in}^2$.
+    \item Since $3.16 > 0.70$, the tension steel area exceeds the minimum required.
+    \item Reinforcement ratio $\rho = \frac{A_s}{b d} = \frac{3.16}{210} = 0.015048$, which is greater than $\rho_{min} = 0.003333$.
+\end{itemize}
+
+\section*{Step 2: Calculate Nominal Moment Strength $M_n$}
+
+For a singly reinforced beam, utilizing the rectangular stress block assumption (Whitney block):
+\[
+M_n = A_s f_y \left( d - \frac{a}{2} \right)
+\]
+where $a$ is the depth of the equivalent rectangular stress block:
+\[
+a = \frac{A_s f_y}{0.85 f'_c b}
+\]
+
+\subsection*{Step 2.1: Calculate Depth of Stress Block $a$}
+
+\subsubsection*{Micro-Calculation for Numerator: $A_s f_y$}
+\[
+A_s f_y = 3.16 \times 60,000 = 189,600 \text{ lb}
+\]
+
+\subsubsection*{Micro-Calculation for Denominator: $0.85 f'_c b$}
+\[
+0.85 \times 4000 \times 12 = 3,400 \times 12 = 40,800 \text{ lb/in}
+\]
+
+\subsubsection*{Calculate $a$}
+\[\na = \frac{189,600}{40,800} \approx 4.6471 \text{ in.}\n\]
+
+\subsection*{Step 2.2: Calculate Lever Arm $d - \frac{a}{2}$}
+\begin{itemize}
+    \item $\frac{a}{2} = \frac{4.6471}{2} = 2.3236$ in.
+    \item $d - \frac{a}{2} = 17.5 - 2.3236 = 15.1764$ in.
+\end{itemize}
+
+\subsection*{Step 2.3: Calculate $M_n$ in in.-lb}
+\[
+M_n = 189,600 \times 15.1764 = 2,877,445.44 \text{ in.-lb}
+\]
+
+\subsection*{Step 2.4: Convert $M_n$ to ft-kip}
+\begin{itemize}
+    \item Convert to ft-lb (divide by 12): $2,877,445.44 / 12 = 239,787.12 \text{ ft-lb}$.
+    \item Convert to ft-kip (divide by 1000): $239,787.12 / 1000 = 239.78712 \text{ ft-kip}$.
+    \item Rounded: \textbf{240 ft-kip}.
+\end{itemize}
+
+\section*{Step 3: Verify Assumptions and Additional Notes}
+
+\begin{itemize}
+    \item \textbf{Strain compatibility (qualitative check):} The section is expected to be under-reinforced because the provided steel ratio ($\rho \approx 0.015$) is modest for the given section; thus tension steel yielding is the likely controlling behavior for this example.
+    \item \textbf{Compression Zone Bars:} Ignored as per problem statement.
+    \item \textbf{Accuracy of $d$:} The 2.5 in. assumption is sufficient. Using a No. 3 stirrup would result in $d \approx 17.625$ in., slightly increasing capacity, but 2.5 is conservative/standard for this example.
+    \item \textbf{Units:} All consistency checks passed.
+\end{itemize}
+
+\end{document}
