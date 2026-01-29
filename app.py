@@ -79,9 +79,18 @@ with col_res:
         beam = RectangularBeam(b, d, fc, fy, As_total)
         results = beam.calculate_mn()
         
+        # --- NEW: Display Equation with Values ---
+        st.markdown("### Calculation Details")
+        st.latex(r"M_n = A_s f_y \left(d - \frac{a}{2}\right)")
+        
+        # Substitute values for display
+        st.markdown(f"**Substitution:**")
+        st.latex(fr"M_n = {As_total:.2f} \cdot {fy} \left({d:.2f} - \frac{{{results['a']:.3f}}}{{2}}\right)")
+        
         st.success(f"**Nominal Moment Capacity ($M_n$):** {results['Mn_kft']:.2f} k-ft")
         
-        st.markdown("### Details")
+        st.markdown("#### Detailed Results")
+
         st.write(f"- **Reinforcement Area ($A_s$):** {As_total:.2f} $in^2$")
         st.write(f"- **Depth of Stress Block ($a$):** {results['a']:.3f} in")
         st.write(f"- **Neutral Axis Depth ($c$):** {results['c']:.3f} in")

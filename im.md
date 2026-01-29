@@ -3,3 +3,9 @@ im planning to make a rectangular beam calculator based on python end-to-end sys
 features include:
 1. i can input the dimensions of the beam and will show up the image of the beam with the dimensions
 2.. it solves the missing value by following a mathematical formula 
+
+
+make the equation show up as soon as we type the values
+
+pip install -r requirements.txt
+python -m streamlit run app.py
