@@ -1,3 +1,16 @@
+
+## The Task
+
+
+
+<img width="954" height="391" alt="image" src="https://github.com/user-attachments/assets/f2d7b047-bb92-4599-b9d7-380e2c6fe214" /> <br><br>
+
+## Adaptive Rectangular Beam Calculator App
+
+_Calculations and solution documented at a [pdf-latex](https://github.com/algorembrant/RecrBeam-Calculator/blob/main/solution_breakdown.pdf)_
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/e734b841-a5f7-48fa-b010-3c06c3ef1fb1" />
+
+
 # Example 4-1: Nominal Moment Strength Calculation for a Singly Reinforced Concrete Beam
 
 This document provides a detailed, step-by-step breakdown of the example problem shown in the provided figure (Fig. 4-19a). The goal is to calculate the nominal moment strength $M_n$ for the beam and confirm that the area of tension steel exceeds the required minimum steel area as per Equation (4-11) from the relevant design code (likely ACI 318 or similar). All calculations are performed without skipping any micro-steps, including unit conversions and intermediate arithmetic operations where applicable.
