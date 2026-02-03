@@ -17,10 +17,6 @@ A professional desktop application for calculating the **Nominal Moment Strength
 - **Step-by-step equations**: Detailed calculation breakdown with OK/NG indicators
 - Minimum steel area check per ACI 318
 
-## Screenshot
-
-![Beam Analysis App](https://github.com/user-attachments/assets/e734b841-a5f7-48fa-b010-3c06c3ef1fb1)
-
 ## Installation
 
 ### Prerequisites
